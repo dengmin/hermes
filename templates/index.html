@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>考试管理系统</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/app.css">
+    {% block styles %}{% endblock %}
+</head>
+<body>
+<div id="app">
+    <router-view></router-view>
+</div>
+<!-- 引入组件库 -->
+<script src="/static/js/require.min.js"></script>
+<script src="/static/js/app.js"></script>
+
+</body>
+</html>

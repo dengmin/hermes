@@ -1,0 +1,58 @@
+<el-row>
+    <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
+        <el-form :inline="true">
+            <el-form-item>
+                <el-input placeholder="课程名称" v-model="keyword"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary"  class="el-icon-search" v-on:click="query">查询</el-button>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary"  class="el-icon-plus" @click="goCreateCourse">新增</el-button>
+            </el-form-item>
+        </el-form>
+    </el-col>
+    <el-col>
+		<el-table :data="items" element-loading-text="拼命加载中" @selection-change="handleSelectionChange" style="width: 100%;">
+			<el-table-column type="expand">
+                <template slot-scope="scope">
+                    <el-form label-position="left" inline class="table-expand">
+                        <el-form-item label="培训地点:">{{ scope.row.address }}</el-form-item>
+                        <el-form-item label="考核方式:"><span v-html="scope.row.exam_type"></span></el-form-item>
+                        <el-form-item label="学员要求:">{{ scope.row.require }}</el-form-item>
+                        <el-form-item label="课程联系人:">{{ scope.row.contact }}</el-form-item>
+                    </el-form>
+                </template>
+			</el-table-column>
+			<el-table-column prop="name" label="课程名称">
+			</el-table-column>
+            <el-table-column prop="en_name" label="时间" width="360px">
+                <template slot-scope="scope">
+                    <el-tag>{{scope.row.start_time}}</el-tag>-
+                    <el-tag>{{ scope.row.end_time }}</el-tag>
+				</template>
+            </el-table-column>
+            <el-table-column prop="teachers" label="讲师">
+            </el-table-column>
+            <el-table-column label="操作">
+                <template slot-scope="scope">
+                    <el-button type="text" @click="edit_course(scope.row.id)"><i class="el-icon-edit"></i></el-button>
+                    <el-button type="text" @click="list_student(scope.row.id)"><i class="el-icon-view"></i></el-button>
+                </template>
+            </el-table-column>
+		</el-table>
+    </el-col>
+    <el-col>
+        <div class="block" style="float: right;margin-right: 10px;margin-top: 10px;">
+            <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="startPage"
+                :page-sizes="pageSizes"
+                :page-size="pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="total">
+            </el-pagination>
+        </div>
+    </el-col>
+</el-row>

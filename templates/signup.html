@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>培训课程在线报名</title>
+  <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/css/sign.css">
+</head>
+<body>
+    <div id="app">
+      {% if courses %}
+      {% for item in courses %}
+      <div class="box box-hover">
+          <div class="box-body">
+              <div class="box-title">
+                  <h3>{{ item.name }}</h3>
+                  <span>{{ item.remark|safe }}</span>
+              </div>
+          </div>
+          <div class="box-footer">
+              <div class="row">
+                  <div class="row-col">讲师: {{ item.teachers }}</div>
+                  <div class="row-col">培训地点: {{item.address}}</div>
+                  <div class="row-col">培训时间: {{item.start_time}} ~ {{item.end_time}}</div>
+                  <div class="row-col">联系人: {{item.contact}}</div>
+                  <div class="row-col"><button class="btn-info sign-btn" v-on:click="openDialog({{ item.id }})">点我报名</button></div>
+                  <div style="clear: both;"></div>
+              </div>
+          </div>
+      </div>
+      {% endfor %}
+    {% else %}
+          <div class="box box-hover">
+          <div class="box-body">
+              <div class="text-center">暂时没有培训课程!</div>
+          </div>
+          </div>
+    {% endif %}
+
+        <modal-dialog v-bind:show.sync="show" v-bind:class="dialogClass">
+            <header class="dialog-header" slot="header">
+                <h1 class="dialog-title">课程报名</h1>
+            </header>
+            <div class="dialog-body" slot="body">
+                <input class="input" v-model="username" placeholder="请输入您的用户名/花名">
+                <div v-if="message">${message}</div>
+            </div>
+            <footer class="dialog-footer" slot="footer">
+                <button class="btn-info" @click="closeDialog">关闭</button>
+                <button class="btn-success" @click="sign">报名</button>
+            </footer>
+        </modal-dialog>
+
+    </div>
+    <template id="dialog-template">
+        <div class="dialogs">
+            <div class="dialog" v-bind:class="{ 'dialog-active': show }">
+                <div class="dialog-content">
+                    <slot name="header"></slot>
+                    <slot name="body"></slot>
+                    <slot name="footer"></slot>
+                </div>
+            </div>
+            <div class="dialog-overlay"></div>
+        </div>
+    </template>
+</body>
+  <script src="/static/js/vue.min.js"></script>
+  <script src="/static/js/vue-resource.min.js"></script>
+  <script>
+      Vue.component('modal-dialog', {
+          template: '#dialog-template',
+          props: ['show']
+      });
+    new Vue({
+        el: '#app',
+        delimiters: ["${", "}"],
+        data: {
+            show: false,
+            dialogClass: 'dialog-info',
+            username: '',
+            course_id: '',
+            message:''
+        },
+        methods: {
+            openDialog: function(course_id) {
+                this.course_id = course_id;
+                this.show = true;
+            },
+            closeDialog: function() {
+                this.show = false;
+                this.username = '';
+                this.message = '';
+            },
+            sign:function(){
+                var params = {
+                    course_id: this.course_id,
+                    username: this.username
+                };
+                var vm = this;
+                if(this.username.trim().length <= 0){
+                    vm.message = '请输入您的用户名(内网登录名/花名/真实姓名/英文名)';
+                    return;
+                }
+                this.$http.post('/course/sign',params).then(function(res){
+                    var result = res.body;
+                    if(result.success){
+                        vm.message = '报名成功!';
+                    }else{
+                        vm.message = result.msg;
+                    }
+                });
+            }
+        }
+    });
+  </script>
+</html>

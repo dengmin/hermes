@@ -1,0 +1,33 @@
+<el-row>
+    <el-col >
+		<el-table :data="items" element-loading-text="拼命加载中" style="width: 100%;margin-top: 15px;">
+			<el-table-column label="学员名称">
+                <template slot-scope="scope">
+                    <span><el-tag type="success">{{scope.row.username}}</el-tag></span>
+                    <span v-if="scope.row.nickname">({{ scope.row.nickname }})</span>
+				</template>
+			</el-table-column>
+            <el-table-column label="报名状态">
+                <template slot-scope="scope">
+                    <span v-html="scope.row.signup === true ? '已报名':''"></span>
+                    <span v-if="scope.row.signup === true"><br/>{{ scope.row.sign_time }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="总分" prop="score"></el-table-column>
+            <el-table-column label="补考分数" prop="makeup"></el-table-column>
+		</el-table>
+    </el-col>
+    <el-col>
+        <div class="block" style="float: right;margin-right: 10px;margin-top: 10px;">
+            <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="startPage"
+                :page-sizes="pageSizes"
+                :page-size="pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="total">
+            </el-pagination>
+        </div>
+    </el-col>
+</el-row>

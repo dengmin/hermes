@@ -1,0 +1,48 @@
+<el-row>
+    <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
+        <el-form :inline="true">
+            <el-form-item>
+                <el-input placeholder="部门名称" v-model="keyword"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary"  class="el-icon-search" v-on:click="query">查询</el-button>
+            </el-form-item>
+        </el-form>
+    </el-col>
+    <el-col>
+		<el-table :data="items" v-loading="listLoading" element-loading-text="拼命加载中" @selection-change="handleSelectionChange" style="width: 100%;">
+			<el-table-column type="selection" width="55">
+			</el-table-column>
+			<el-table-column prop="name" label="名称"  sortable>
+                <template slot-scope="scope">
+                    <span><el-tag type="success">{{scope.row.name}}</el-tag></span><br/>
+                    <span v-if="scope.row.real_name">真实姓名:{{ scope.row.real_name }}<br/></span>
+                    <span v-if="scope.row.en_name">英文名:{{ scope.row.en_name }}<br/></span>
+                    <span v-if="scope.row.nickname"><el-tag>花名:{{ scope.row.nickname }}</el-tag></span>
+				</template>
+			</el-table-column>
+            <el-table-column prop="en_name" label="联系方式">
+                <template slot-scope="scope">
+					<span v-if="scope.row.email">{{scope.row.email}}<br/></span>
+                    <span v-if="scope.row.wechat">微信:{{ scope.row.wechat }}<br/></span>
+                    <span v-if="scope.row.phone">手机:{{ scope.row.phone }}</span>
+				</template>
+            </el-table-column>
+			<el-table-column prop="create_at" label="创建时间">
+			</el-table-column>
+		</el-table>
+    </el-col>
+    <el-col>
+        <div class="block" style="float: right;margin-right: 10px;margin-top: 10px;">
+            <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="startPage"
+                :page-sizes="pageSizes"
+                :page-size="pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="total">
+            </el-pagination>
+        </div>
+    </el-col>
+</el-row>

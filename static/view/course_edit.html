@@ -1,0 +1,87 @@
+<el-row>
+    <el-form ref="form" :model="form" label-width="100px" class="coursefrom" :rules="validators">
+        <el-tabs v-model="activeName">
+            <el-tab-pane label="基本信息" name="basic">
+                <el-form-item label="课程名称" :rules="validators.name" prop="name">
+                    <el-input v-model="form.name"></el-input>
+                </el-form-item>
+                <el-form-item label="课程时间" :rules="validators.address" required>
+                    <el-col :span="11">
+                        <el-form-item prop="start_time" :rules="validators.start_time">
+                        <el-date-picker type="datetime" placeholder="开始日期" v-model="form.start_time" style="width: 100%;" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+                        </el-form-item>
+                    </el-col>
+                    <el-col class="line" :span="2">-</el-col>
+                    <el-col :span="11">
+                        <el-form-item prop="end_time" :rules="validators.end_time">
+                        <el-date-picker type="datetime" placeholder="结束时间" v-model="form.end_time" style="width: 100%;" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+                        </el-form-item>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="培训地点" prop="address" :rules="validators.address">
+                    <el-input v-model="form.address"></el-input>
+                </el-form-item>
+                <el-form-item label="培训分类" prop="category">
+                    <el-radio-group v-model="form.category">
+                        <el-radio label="profession">专业知识培训</el-radio>
+                        <el-radio label="office">办公技能培训</el-radio>
+                        <el-radio label="new_product">新品类</el-radio>
+                        <el-radio label="other">其他</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="课程等级" prop="level">
+                    <el-radio-group v-model="form.level">
+                        <el-radio label="junior">初级</el-radio>
+                        <el-radio label="medium">中级</el-radio>
+                        <el-radio label="senior">高级</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="培训方式" prop="train_type">
+                    <el-radio-group v-model="form.train_type">
+                          <el-radio label="">无</el-radio>
+                          <el-radio label="online">线上群课程直播</el-radio>
+                          <el-radio label="offline">线下面对面</el-radio>
+                    </el-radio-group>
+              </el-form-item>
+                <el-form-item label="培训对象" prop="obj">
+                    <el-input type="textarea" v-model="form.obj"></el-input>
+                </el-form-item>
+                <el-form-item label="人数限定" prop="number">
+                    <el-input v-model="form.number"></el-input>
+                </el-form-item>
+                <el-form-item label="学员要求" prop="require">
+                    <el-input type="textarea" v-model="form.require" rows="4"></el-input>
+                </el-form-item>
+                <el-form-item label="考核方式" prop="exam_type">
+                    <el-input type="textarea" v-model="form.exam_type"></el-input>
+                </el-form-item>
+                <el-form-item label="课程联系人" prop="contact">
+                    <el-input v-model="form.contact"></el-input>
+                </el-form-item>
+            </el-tab-pane>
+            <el-tab-pane label="简介" name="remark" prop="remark" style="margin-bottom:30px;">
+                <vue-html5-editor :content="form.remark" :height="300" @change="remark_change"></vue-html5-editor>
+            </el-tab-pane>
+            <el-tab-pane label="内容" name="content" prop="content" style="margin-bottom:30px;">
+                <vue-html5-editor :content="form.content" :height="300" @change="content_change"></vue-html5-editor>
+            </el-tab-pane>
+            <el-tab-pane label="讲师" name="teachers">
+                <el-form-item label="讲师名单" prop="teachers">
+                    <el-input type="textarea" v-model="form.teachers" placeholder="多个名称用逗号隔开"></el-input>
+                </el-form-item>
+            </el-tab-pane>
+            <el-tab-pane label="课后分享" name="aftershare" style="margin-bottom:30px;">
+                <vue-html5-editor :content="form.share" :height="300" @change="share_change"></vue-html5-editor>
+            </el-tab-pane>
+            <el-tab-pane label="参与学员" name="students">
+                <el-form-item label="学员名单" prop="students">
+                    <el-input type="textarea" v-model="form.students" rows="12" placeholder="批量添加学员,保持一行一个名字的格式"></el-input>
+                </el-form-item>
+            </el-tab-pane>
+        </el-tabs>
+        <el-form-item>
+            <el-button type="primary" @click="create" :loading="postInProcess">立即保存</el-button>
+            <el-button @click="cancel">取消</el-button>
+      </el-form-item>
+    </el-form>
+</el-row>

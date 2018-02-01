@@ -1,0 +1,9 @@
+Flask
+Flask_sqlalchemy
+Flask_script
+Flask_restful
+pymysql
+flask_login
+gunicorn
+tornado
+xlrd

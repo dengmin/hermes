@@ -1,0 +1,26 @@
+.box {border: 1px solid #d3dce6; background-color: #ffffff;margin-top: 10px;}
+.box.box-hover:hover{border-color: #8391a5}
+.box-body{padding: 10px;}
+.box-title{line-height: 36px;}
+.box-title span{font-size: 14px;}
+.row{box-sizing: border-box;}
+.row-col{width: 50%;}
+.text-center{text-align: center;}
+.box-footer{padding: 10px;border-top: 1px solid #d3dce6;}
+.sign-btn{margin-top: 10px;}
+button {display: inline-block;border: 0;box-sizing: border-box;color: #fff;font-size: 1em;border-radius: .1em;line-height: 2em;padding: 0 1em;transition: .4s ease-out;outline: 0;text-decoration: none;}
+.btn-info{background: #0090d3;}
+.btn-success {background: #00cc66;}
+.dialog {width: 480px;position: fixed;left: 50%;top: 2em;transform: translateX(-50%);z-index: 2000;visibility: hidden;backface-visibility: hidden;perspective: 1300px;}
+.dialog-active {visibility: visible;}
+.dialog-active .dialog-content {position: relative;opacity: 1;transform: rotateY(0);}
+.dialog-active ~ .dialog-overlay {opacity: 1;visibility: visible;}
+.dialog-content {border-radius: 3px;background: #fff;overflow: hidden;box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);transition: .5s ease-in-out;opacity: 0;transform-style: preserve-3d;transform: rotateY(-70deg);}
+.dialog-header {color: #fff;}
+.dialog-title {margin: 0;font-size: 2em;text-align: center;font-weight: 200;line-height: 2em;}
+.dialog-body {padding: 2em;}
+.dialog-footer {margin: 0 2em;padding: 2em 0;text-align: right;border-top: 1px solid rgba(0, 0, 0, 0.1);}
+.dialog-overlay {content: "";position: fixed;visibility: hidden;top: 0;left: 0;right: 0;bottom: 0;z-index: 1000;opacity: 0;background: rgba(0, 0, 0, 0.5);transition: all .6s;}
+.dialog-info .dialog-header{background-color: #0090d3;}
+.input{-webkit-appearance: none;background-color: #fff;border-radius: 4px;border: 1px solid #dcdfe6;box-sizing: border-box;color: #606266;display: inline-block;font-size: inherit;height: 40px;line-height: 1;outline: 0;padding: 0 15px;transition: border-color .2s cubic-bezier(.645,.045,.355,1);width: 100%;}
+.input:focus{border: 1px solid #20a0ff;outline:none;}

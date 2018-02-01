@@ -1,0 +1,38 @@
+<el-row>
+    <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
+        <el-form :inline="true">
+            <el-form-item>
+                <el-input placeholder="部门名称" v-model="keyword"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary"  class="el-icon-search" v-on:click="query">查询</el-button>
+            </el-form-item>
+        </el-form>
+    </el-col>
+    <el-col>
+		<el-table :data="items" v-loading="listLoading" element-loading-text="拼命加载中" @selection-change="handleSelectionChange" style="width: 100%;">
+			<el-table-column type="selection" width="55">
+			</el-table-column>
+			<el-table-column prop="name" label="名称"  sortable>
+                <template slot-scope="scope">
+                    <el-tag>{{ scope.row.name }}</el-tag>
+                </template>
+			</el-table-column>
+			<el-table-column prop="create_at" label="创建时间">
+			</el-table-column>
+		</el-table>
+    </el-col>
+    <el-col>
+        <div class="block" style="float: right;margin-right: 10px;margin-top: 10px;">
+            <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="startPage"
+                :page-sizes="pageSizes"
+                :page-size="pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="total">
+            </el-pagination>
+        </div>
+    </el-col>
+</el-row>

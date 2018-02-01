@@ -1,0 +1,88 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+}
+#app {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
+.container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
+.container .header{
+    height: 60px;
+    line-height: 60px;
+    background: #20a0ff;
+    color: #fff;
+}
+.container .header .logo {
+    height: 60px;
+    font-size: 22px;
+    text-align: center;
+    border-color: hsla(62,77%,76%,.3);
+    border-right-width: 1px;
+    border-right-style: solid;
+}
+.container .main .content-container{
+    flex: 1;
+    overflow-y: scroll;
+    padding: 20px;
+}
+.container .header .userinfo{
+    text-align: right;
+    padding-right: 35px;
+    float: right;
+}
+.container .header .userinfo .userinfo-inner {
+    cursor: pointer;
+    color: #fff;
+}
+.container .main{
+    display: flex;
+    position: absolute;
+    top: 60px;
+    bottom: 0;
+    overflow: hidden;
+}
+.container .main aside {
+    flex: 0 0 230px;
+    width: 230px;
+}
+.main aside .el-menu{height: 100%;}
+.breadcrumb-container .title {
+    width: 200px;
+    float: left;
+    color: #475669;
+}
+.toolbar {
+    background: #f2f2f2;
+    padding: 10px;
+    margin: 10px 0;
+}
+.coursefrom{
+    padding: 10px;
+    margin: 10px 0;
+    width: 800px;
+}
+.el-form .line{text-align: center;}
+.footer{margin-top: 30px; text-align: center;}
+.table-expand {
+font-size: 0;
+}
+.table-expand label {
+width: 90px;
+color: #99a9bf;
+}
+.table-expand .el-form-item {
+margin-right: 0;
+margin-bottom: 0;
+width: 50%;
+}
