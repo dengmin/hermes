@@ -26,11 +26,11 @@ define(['text!static/view/course_student.html'],function(tpl){
             handleSizeChange:function(v){
                this.pageSize = v;
                this.load();
-           },
-           handleCurrentChange:function(v){
+            },
+            handleCurrentChange:function(v){
                this.page = v;
                this.load();
-           }
+            }
         },
         mounted:function(){
             this.load();

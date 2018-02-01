@@ -2,7 +2,6 @@ from flask import render_template
 from core import create_app
 
 from core.exts import db, login_manager
-from flask_login import login_required
 from flask_restful import Api
 
 from tornado.web import Application as TornadoApp, FallbackHandler
@@ -31,6 +30,5 @@ def req_tera_down(response):
     db.session.remove()
 
 @app.route('/')
-@login_required
 def index():
     return render_template('index.html')

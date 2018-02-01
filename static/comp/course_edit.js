@@ -3,7 +3,6 @@ define(['text!static/view/course_edit.html'], function (tpl) {
        template: tpl,
        data:function(){
            var vm = this;
-           var action = this.$route.meta.action;
            var validators = {
                name:[
                    {required:true, message: '请输入课程名称', trigger: 'blur'}
@@ -19,11 +18,11 @@ define(['text!static/view/course_edit.html'], function (tpl) {
               ]
            };
            var data = {
-               action: action,
+               action: this.$route.meta.action,
                validators: validators,
                activeName:'basic',
                postInProcess:false,
-               form:{
+               form: {
                    name: '',
                    start_time:'',
                    end_time:'',
@@ -39,19 +38,37 @@ define(['text!static/view/course_edit.html'], function (tpl) {
                    share:'',
                    content:'',
                    remark:''
-               }
+               },
+               students:[],
+               page: 1,
+               pageSize:5,
+               total: 0,
+               pageSizes: [15, 20, 50, 100]
            };
-           if(action === 'Edit'){
-               var course_id = vm.$route.params.course_id;
-               this.$http.get('/course/'+course_id).then(function(res){
-                   vm.form = res.body.data;
-               });
-           }
            return data;
        },
        methods:{
            load: function(){
-
+               var vm = this;
+               if(vm.action === 'Edit'){
+                   var course_id = vm.$route.params.course_id;
+                   this.$http.get('/course/'+course_id).then(function(res){
+                       vm.form = res.body.data;
+                   });
+                   vm.load_students();
+               }
+           },
+           load_students:function(){
+               var vm  = this;
+               var course_id = vm.$route.params.course_id;
+               var params = {
+                   page : vm.page,
+                   pagesize : vm.pageSize
+               };
+               this.$http.get('/course/stds/'+course_id, {params:params}).then(function(res){
+                    vm.total = res.body.total;
+                    vm.students = res.body.items;
+                });
            },
            create:function () {
                var vm = this;
@@ -88,10 +105,19 @@ define(['text!static/view/course_edit.html'], function (tpl) {
            },
            cancel:function () {
                this.$router.push('/course');
+           },
+           handleSizeChange:function(v){
+               this.pageSize = v;
+               this.load_students();
+           },
+           handleCurrentChange:function(v){
+               this.page = v;
+               this.load_students();
            }
        },
        mounted:function(){
-
+            this.action = this.$route.meta.action;
+            this.load();
        }
    }
 });

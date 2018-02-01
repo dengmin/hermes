@@ -75,8 +75,33 @@
             </el-tab-pane>
             <el-tab-pane label="参与学员" name="students">
                 <el-form-item label="学员名单" prop="students">
-                    <el-input type="textarea" v-model="form.students" rows="12" placeholder="批量添加学员,保持一行一个名字的格式"></el-input>
+                    <el-input type="textarea" v-model="form.students" rows="6" placeholder="批量添加学员,保持一行一个名字的格式"></el-input>
                 </el-form-item>
+                <el-row v-if="action='Edit'" style="margin-top: 10px; margin-bottom: 10px;">
+                    <el-table :data="students">
+                        <el-table-column label="学员名" prop="username"></el-table-column>
+                        <el-table-column label="报名状态">
+                            <template slot-scope="scope">
+                                <span v-html="scope.row.signup === true ? '已报名':''"></span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="报名时间" prop="sign_time">
+                        </el-table-column>
+                    </el-table>
+                </el-row>
+                <el-row v-if="action='Edit'">
+                    <div class="block" style="float: right;margin-right: 10px;margin-top: 10px;">
+                        <el-pagination
+                            @size-change="handleSizeChange"
+                            @current-change="handleCurrentChange"
+                            :current-page="startPage"
+                            :page-sizes="pageSizes"
+                            :page-size="pageSize"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="total">
+                        </el-pagination>
+                    </div>
+                </el-row>
             </el-tab-pane>
         </el-tabs>
         <el-form-item>
