@@ -93,6 +93,21 @@ def student_course(course_id):
         results.append(r)
     return {'success': True, 'total': total, 'items': results}
 
+@bp.route('/score/<int:course_id>', methods=['POST'])
+def socre_course(course_id):
+    user_id = request.json.get('user_id')
+    exam = ExamResult.query.filter(ExamResult.user_id==int(user_id)).filter(ExamResult.course_id == course_id).first()
+    if not exam:
+        exam = ExamResult(course_id=course_id, user_id=user_id)
+    exam.single = int(request.json.get('single'))
+    exam.multi = int(request.json.get('multi'))
+    exam.judge = int(request.json.get('judge'))
+    exam.answer = int(request.json.get('answer'))
+    exam.makeup = int(request.json.get('makeup'))
+    exam.score = (exam.single + exam.multi + exam.judge + exam.answer)
+    db.session.add(exam)
+    db.session.commit()
+    return {'success':True, 'data': exam}
 
 @bp.route('/sign', methods=['GET'])
 def to_signup():

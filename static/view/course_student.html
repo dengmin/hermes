@@ -1,6 +1,6 @@
 <el-row>
     <el-col >
-		<el-table :data="items" element-loading-text="拼命加载中" style="width: 100%;margin-top: 15px;">
+		<el-table :data="items" element-loading-text="拼命加载中" highlight-current-row stripe style="width: 100%;margin-top: 15px;">
 			<el-table-column label="学员名称">
                 <template slot-scope="scope">
                     <span><el-tag type="success">{{scope.row.username}}</el-tag></span>
@@ -13,8 +13,20 @@
                     <span v-if="scope.row.signup === true"><br/>{{ scope.row.sign_time }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="总分" prop="score"></el-table-column>
-            <el-table-column label="补考分数" prop="makeup"></el-table-column>
+            <el-table-column label="分数">
+                <el-table-column label="单选题" prop="single" width="80"></el-table-column>
+                <el-table-column label="多选题" prop="multi" width="80"></el-table-column>
+                <el-table-column label="判断题" prop="judge" width="80"></el-table-column>
+                <el-table-column label="简单题" prop="answer" width="80"></el-table-column>
+            </el-table-column>
+            <el-table-column label="总分" prop="score" width="100"></el-table-column>
+            <el-table-column label="补考分数" prop="makeup" width="100"></el-table-column>
+            <el-table-column label="平均分" prop="average"></el-table-column>
+            <el-table-column label="操作" width="100">
+                <template slot-scope="scope">
+                    <el-button type="text" @click="editScore(scope.row, scope.$index)" icon="el-icon-edit"></el-button>
+                </template>
+            </el-table-column>
 		</el-table>
     </el-col>
     <el-col>
@@ -29,5 +41,32 @@
                 :total="total">
             </el-pagination>
         </div>
+    </el-col>
+    <el-col :span="2">
+        <el-dialog title="变更分数" :visible.sync="dialogFormVisible" :model="form">
+            <div style="width: 80%; margin: 0 auto;">
+                <el-form status-icon :inline="false" label-width="60px">
+                    <el-form-item label="单选题">
+                        <el-input-number type="text" placeholder="单选题分数" auto-complete="off" v-model="form.single"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="多选题">
+                        <el-input-number type="text" placeholder="多选题分数" auto-complete="off" v-model="form.multi"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="判断题">
+                        <el-input-number type="text" placeholder="判断题分数" auto-complete="off" v-model="form.judge"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="简单题">
+                        <el-input-number type="text" placeholder="简单题分数" auto-complete="off" v-model="form.answer"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="补考分">
+                        <el-input-number type="text" placeholder="补考分数" auto-complete="off" v-model="form.makeup"></el-input-number>
+                    </el-form-item>
+                </el-form>
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="submitSocre">保存</el-button>
+                <el-button @click="dialogFormVisible=false">取消</el-button>
+            </div>
+        </el-dialog>
     </el-col>
 </el-row>

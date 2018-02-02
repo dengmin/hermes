@@ -16,11 +16,15 @@
 		<el-table :data="items" element-loading-text="拼命加载中" @selection-change="handleSelectionChange" style="width: 100%;">
 			<el-table-column type="expand">
                 <template slot-scope="scope">
+                    <span v-if="scope.row.remark" v-html="scope.row.remark"></span>
                     <el-form label-position="left" inline class="table-expand">
                         <el-form-item label="培训地点:">{{ scope.row.address }}</el-form-item>
                         <el-form-item label="考核方式:"><span v-html="scope.row.exam_type"></span></el-form-item>
-                        <el-form-item label="学员要求:">{{ scope.row.require }}</el-form-item>
+                        <el-form-item label="讲师">{{ scope.row.teachers }}</el-form-item>
                         <el-form-item label="课程联系人:">{{ scope.row.contact }}</el-form-item>
+                        <el-form-item label="课程等级">{{ scope.row.level }}</el-form-item>
+                        <el-form-item label="培训分类">{{ scope.row.category }}</el-form-item>
+                        <el-form-item label="学员要求:">{{ scope.row.require }}</el-form-item>
                     </el-form>
                 </template>
 			</el-table-column>

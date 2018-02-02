@@ -82,3 +82,15 @@ class ExamResult(db.Model):
     score = db.Column(db.Float, doc="总分")
     makeup = db.Column(db.FLOAT, doc="补考分数")
     sign_time = db.Column(db.DateTime, doc="报名时间")
+
+    @property
+    def average(self):
+        if self.makeup == 0 or not self.makeup:
+            return self.score
+        return (self.score + self.makeup) / 2
+
+    def to_dict(self):
+        ret = super(ExamResult,self).to_dict()
+        #ret = ExamResult.to_dict(self)
+        ret['average'] = self.average
+        return ret
