@@ -1,0 +1,26 @@
+<div>
+<div class="g-center login-page" @keyup.enter="login">
+  <el-form class="login-form">
+    <h1 class="main-title">考试管理系统</h1>
+    <el-form-item>
+      <el-input
+        :autofocus="true"
+        placeholder="请输入账号"
+        v-model="username">
+        <template slot="prepend"><i class="el-icon-mobile-phone"></i></template>
+      </el-input>
+    </el-form-item>
+    <el-form-item>
+      <el-input
+        placeholder="请输入密码"
+        type="password"
+        v-model="password">
+        <template slot="prepend"><i class="el-icon-info"></i></template>
+      </el-input>
+    </el-form-item>
+    <el-form-item>
+      <el-button style="width:100%" @click="login" type="primary" :loading="isBtnLoading">登录</el-button>
+    </el-form-item>
+  </el-form>
+</div>
+</div>

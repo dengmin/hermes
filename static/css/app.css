@@ -11,6 +11,9 @@ body {
     bottom: 0;
     width: 100%;
 }
+.main-title{text-align: center;}
+.login-form{width: 400px;margin:13% auto 0;}
+.login-page{background:#fff;}
 .container {
     position: absolute;
     top: 0;

@@ -24,6 +24,9 @@ require(['vue','vue_router', 'vue_resource','ELEMENT', 'editor'], function(Vue,V
     });
 
     var view = {
+        Login: function (resolver) {
+            require(['/static/comp/login.js'],resolver);
+        },
         Index: function (resolver) {
             require(['/static/comp/index.js'], resolver);
         },
@@ -48,6 +51,11 @@ require(['vue','vue_router', 'vue_resource','ELEMENT', 'editor'], function(Vue,V
     };
 
     var routes = [
+        {
+            path: '/login',
+            name: '登录',
+            component: view.Login
+        },
         {
             path:'/',
             name: '首页',
