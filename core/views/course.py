@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 import datetime
+import uuid
+import os
+import xlrd
 from flask import Blueprint, request, render_template
-from core.models import db, Course, ExamResult, User
+from core.models import db, Course, ExamResult, User, Dept
 from core.handler.user import UserHandler
 __all__ = ['bp']
 
@@ -67,8 +70,13 @@ def edit_course(course_id):
                 if name.strip():
                     user = user_handler.get_user(name)
                     if user:
-                        er = ExamResult(user_id=user.id, course_id=course_id)
-                        db.session.add(er)
+                        exam = ExamResult.query.filter(ExamResult.user_id == user.id)\
+                            .filter(ExamResult.course_id == course_id).first()
+                        if not exam:
+                            exam = ExamResult(user_id=user.id, course_id=course_id)
+                        else:
+                            print('exam exists')
+                        db.session.add(exam)
                     else:
                         print('user %s not found'%(name))
         db.session.commit()
@@ -81,15 +89,20 @@ def edit_course(course_id):
 def student_course(course_id):
     page = request.args.get('page', 1, int)
     limit = request.args.get('pagesize', 20, int)
+    dept_id = request.args.get('dept_id')
     results = []
     datas = db.session.query(ExamResult, User).filter(ExamResult.user_id == User.id)\
-    .filter(ExamResult.course_id == course_id)
+    .filter(ExamResult.course_id == course_id).order_by(ExamResult.score)
+    if dept_id:
+        datas = datas.filter(User.dept_id == int(dept_id))
     total = datas.count()
     datas = datas.limit(limit).offset((page - 1) * limit).all()
     for exam, user in datas:
         r = exam.to_dict()
-        r['username'] = user.name
+        r['username'] = user.real_name
         r['nickname'] = user.nickname
+        r['dept'] = user.dept.name if user.dept else ''
+        r['post'] = user.post
         results.append(r)
     return {'success': True, 'total': total, 'items': results}
 
@@ -135,5 +148,66 @@ def sign_course():
     db.session.add(exam)
     db.session.commit()
     return {'success': True}
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ('xls', 'xlsx')
+
+@bp.route('/import/<int:course_id>', methods=['POST'])
+def import_score(course_id):
+    file = request.files['file']
+    if file and allowed_file(file.filename):
+        filename = str(uuid.uuid4())
+        path = os.path.join('/tmp', filename)
+        file.save(path)
+        # 从Excel中读取文件
+        book = xlrd.open_workbook(path, encoding_override='utf-8')
+        sh = book.sheet_by_index(0)
+        for i in range(sh.nrows):
+            if i <=3: continue
+            row = sh.row_values(i)
+            dept_name = row[1]
+
+            #设置部门
+            dept = Dept.query.filter(Dept.name == dept_name).first()
+            if not dept:
+                dept = Dept(name=dept_name)
+                db.session.add(dept)
+            realname = row[3].strip()
+            nickname = row[4].strip()
+            #设置用户
+            user = None
+            if realname:
+                user = User.query.filter(User.real_name == realname).first()
+            else:
+                if nickname:
+                    user = User.query.filter(User.nickname == nickname).first()
+            if not user:
+                name = nickname if nickname else realname
+                user = User(name=name, email=None)
+            user.nickname = nickname
+            user.real_name = realname
+            user.dept_id = dept.id
+            user.post = row[2]
+            db.session.add(user)
+
+            #设置分数
+            exam = ExamResult.query.filter(ExamResult.course_id==course_id)\
+                .filter(ExamResult.user_id == user.id).first()
+            if not exam:
+                exam = ExamResult(course_id=course_id, user_id=user.id)
+            exam.single = row[5]
+            exam.multi = row[6]
+            exam.judge = row[7]
+            exam.answer = row[8]
+            exam.score = row[9]
+            if row[10]:
+                exam.makeup = row[10]
+            db.session.add(exam)
+            db.session.commit()
+        os.remove(path)
+    else:
+        return {'success': False, 'msg': '文件格式不对'}
+    return {}
 
 

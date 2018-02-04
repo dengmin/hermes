@@ -17,7 +17,8 @@ define(['text!static/view/dept.html'], function (tpl) {
                var params = {
                    k: self.keyword,
                    pagesize: self.pageSize,
-                   page: self.startPage
+                   page: self.startPage,
+                   pagable: 1
                };
                this.$http.get('/dept/list', {params:params}).then(function(res){
                    self.items = res.body.data;

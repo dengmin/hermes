@@ -77,7 +77,7 @@
                 <el-form-item label="学员名单" prop="students">
                     <el-input type="textarea" v-model="form.students" rows="6" placeholder="批量添加学员,保持一行一个名字的格式"></el-input>
                 </el-form-item>
-                <el-row v-if="action='Edit'" style="margin-top: 10px; margin-bottom: 10px;">
+                <el-row v-if="action=='Edit'" style="margin-top: 10px; margin-bottom: 10px;">
                     <el-table :data="students">
                         <el-table-column label="学员名" prop="username"></el-table-column>
                         <el-table-column label="报名状态">
@@ -89,7 +89,7 @@
                         </el-table-column>
                     </el-table>
                 </el-row>
-                <el-row v-if="action='Edit'">
+                <el-row v-if="action=='Edit'">
                     <div class="block" style="float: right;margin-right: 10px;margin-top: 10px;">
                         <el-pagination
                             @size-change="handleSizeChange"

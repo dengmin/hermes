@@ -3,6 +3,9 @@ define(['text!static/view/course_student.html'],function(tpl){
         template: tpl,
         data: function () {
             return {
+                dept_options:[],
+                dept_id:'',
+                uploadurl:'',
                 course_id: '',
                 user_id: '',
                 items: [],
@@ -28,11 +31,18 @@ define(['text!static/view/course_student.html'],function(tpl){
                 var vm = this;
                 var params = {
                     page : vm.page,
-                    pagesize : vm.pageSize
+                    pagesize : vm.pageSize,
+                    dept_id: vm.dept_id
                 };
                 this.$http.get('/course/stds/'+vm.course_id, {params:params}).then(function(res){
                     vm.total = res.body.total;
                     vm.items = res.body.items;
+                });
+            },
+            load_dept: function () {
+                var vm = this;
+                this.$http.get('/dept/list').then(function(res){
+                    vm.dept_options = res.body.data;
                 });
             },
             handleSizeChange:function(v){
@@ -74,11 +84,18 @@ define(['text!static/view/course_student.html'],function(tpl){
                 }).catch(function(res){
                     vm.$message({message:res.body.message, type:'error'});
                 });
+            },
+            on_upload:function(response){
+                if(response.success){
+                    this.load();
+                }
             }
         },
         mounted:function(){
             this.course_id = this.$route.params.course_id;
+            this.uploadurl = '/course/import/'+this.course_id;
             this.load();
+            this.load_dept();
         }
     }
 });

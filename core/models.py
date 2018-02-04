@@ -40,6 +40,16 @@ class User(UserMixin, db.Model):
         verify = hashlib.sha1(passwd.encode('utf-8')).hexdigest()
         return verify == hsh
 
+    @property
+    def dept(self):
+        if self.dept_id:
+            return Dept.query.get(self.dept_id)
+
+    def to_dict(self):
+        ret = super(User, self).to_dict()
+        ret['dept'] = self.dept.name if self.dept else ''
+        return ret
+
 class Dept(db.Model):
     """"部门"""
     __tablename__ = 'dept'
@@ -91,6 +101,5 @@ class ExamResult(db.Model):
 
     def to_dict(self):
         ret = super(ExamResult,self).to_dict()
-        #ret = ExamResult.to_dict(self)
         ret['average'] = self.average
         return ret

@@ -1,12 +1,44 @@
 <el-row>
+    <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
+        <el-form :inline="true">
+            <el-form-item>
+                <el-select v-model="dept_id" placeholder="部门" clearable filterable>
+                    <el-option
+                      v-for="item in dept_options"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.id">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary"  class="el-icon-search" v-on:click="load">查询</el-button>
+            </el-form-item>
+            <el-form-item>
+                <el-upload
+                  ref="upload"
+                  :action="uploadurl"
+                  :on-success="on_upload"
+                  :auto-upload="true">
+                  <el-button slot="trigger" size="small" type="primary">导入</el-button>
+                </el-upload>
+            </el-form-item>
+        </el-form>
+    </el-col>
     <el-col >
 		<el-table :data="items" element-loading-text="拼命加载中" highlight-current-row stripe style="width: 100%;margin-top: 15px;">
 			<el-table-column label="学员名称">
                 <template slot-scope="scope">
-                    <span><el-tag type="success">{{scope.row.username}}</el-tag></span>
+                    <span v-if="scope.row.username"><el-tag type="success">{{scope.row.username}}</el-tag></span>
                     <span v-if="scope.row.nickname">({{ scope.row.nickname }})</span>
 				</template>
 			</el-table-column>
+            <el-table-column label="部门/职位">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.dept">{{ scope.row.dept }}<br/></span>
+                    {{ scope.row.post }}
+                </template>
+            </el-table-column>
             <el-table-column label="报名状态">
                 <template slot-scope="scope">
                     <span v-html="scope.row.signup === true ? '已报名':''"></span>
@@ -20,7 +52,11 @@
                 <el-table-column label="简单题" prop="answer" width="80"></el-table-column>
             </el-table-column>
             <el-table-column label="总分" prop="score" width="100"></el-table-column>
-            <el-table-column label="补考分数" prop="makeup" width="100"></el-table-column>
+            <el-table-column label="补考分数" prop="makeup" width="100">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.makeup !== 0">{{ scope.row.makeup }}</span>
+                </template>
+            </el-table-column>
             <el-table-column label="平均分" prop="average"></el-table-column>
             <el-table-column label="操作" width="100">
                 <template slot-scope="scope">
