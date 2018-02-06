@@ -5,6 +5,7 @@ define(['text!static/view/course_student.html'],function(tpl){
             return {
                 dept_options:[],
                 dept_id:'',
+                username:'',
                 uploadurl:'',
                 course_id: '',
                 user_id: '',
@@ -32,7 +33,8 @@ define(['text!static/view/course_student.html'],function(tpl){
                 var params = {
                     page : vm.page,
                     pagesize : vm.pageSize,
-                    dept_id: vm.dept_id
+                    dept_id: vm.dept_id,
+                    username: vm.username
                 };
                 this.$http.get('/course/stds/'+vm.course_id, {params:params}).then(function(res){
                     vm.total = res.body.total;

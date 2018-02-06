@@ -3,6 +3,7 @@ import datetime
 import uuid
 import os
 import xlrd
+from sqlalchemy import or_
 from flask import Blueprint, request, render_template
 from core.models import db, Course, ExamResult, User, Dept
 from core.handler.user import UserHandler
@@ -90,11 +91,19 @@ def student_course(course_id):
     page = request.args.get('page', 1, int)
     limit = request.args.get('pagesize', 20, int)
     dept_id = request.args.get('dept_id')
+    username = request.args.get('username')
     results = []
     datas = db.session.query(ExamResult, User).filter(ExamResult.user_id == User.id)\
-    .filter(ExamResult.course_id == course_id).order_by(ExamResult.score)
+    .filter(ExamResult.course_id == course_id)
     if dept_id:
         datas = datas.filter(User.dept_id == int(dept_id))
+    if username:
+        datas = datas.filter(or_(
+            User.nickname.ilike('%{}%'.format(username)),
+            User.real_name.ilike('%{}%'.format(username)),
+            User.en_name.ilike('%{}%'.format(username)),
+        ))
+    datas = datas.order_by(ExamResult.score)
     total = datas.count()
     datas = datas.limit(limit).offset((page - 1) * limit).all()
     for exam, user in datas:
