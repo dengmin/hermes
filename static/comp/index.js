@@ -25,6 +25,10 @@ define(['text!static/view/index.html'], function (tpl) {
                    name: '课程管理',
                    id: 4,
                    url: '/course'
+               },{
+                   name: '我的问卷',
+                   id: 5,
+                   url: '/naires'
                }]
            }];
            return {

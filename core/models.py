@@ -21,6 +21,7 @@ class User(UserMixin, db.Model):
     post = db.Column(db.String(100), doc="职位")
     phone = db.Column(db.String(50), doc="手机号")
     wechat = db.Column(db.String(50), doc="微信号")
+    score = db.Column(db.FLOAT, doc="学分")
     lastlogin = db.Column(db.DateTime, doc="上一次登录时间")
 
     def __init__(self, name, email):
@@ -103,3 +104,26 @@ class ExamResult(db.Model):
         ret = super(ExamResult,self).to_dict()
         ret['average'] = self.average
         return ret
+
+
+class ScoreHistory(db.Model):
+    """学员每一次增加学分的历史记录"""
+    __tablename__ = 'socre_history'
+    id = db.Column(db.INTEGER, primary_key=True)
+    user_id = db.Column(db.Integer, doc="用户id")
+    course_id = db.Column(db.Integer, doc="课程ID")
+    score = db.Column(db.INTEGER, doc="增加的学分")
+    created = db.Column(db.DateTime, doc="新增时间", default=datetime.now)
+
+
+class Naire(db.Model):
+    """问卷"""
+    __tablename__ = 'naire'
+    id = db.Column(db.INTEGER, primary_key=True)
+    user_id = db.Column(db.Integer, doc="用户id")
+    title = db.Column(db.String(255), doc="问卷标题")
+    status = db.Column(db.Boolean, doc="发布状态")
+    comment = db.Column(db.TEXT, doc="问卷介绍")
+    endtime = db.Column(db.DateTime, doc="截止时间")
+
+

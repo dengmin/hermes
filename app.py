@@ -14,9 +14,11 @@ api = Api(app)
 login_manager.init_app(app)
 
 from core.views import user, dept, course
+from core.views import naire
 app.register_blueprint(user.bp, url_prefix='/user')
 app.register_blueprint(dept.bp, url_prefix='/dept')
 app.register_blueprint(course.bp, url_prefix='/course')
+app.register_blueprint(naire.bp, uri_prefix='/naire')
 
 tornado_container = WSGIContainer(app)
 

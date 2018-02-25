@@ -45,6 +45,12 @@ require(['vue','vue_router', 'vue_resource','ELEMENT', 'editor'], function(Vue,V
         CourseStudent: function (resolver) {
             require(['/static/comp/course_student.js'], resolver);
         },
+        Naire: function (resolver) {
+            require(['/static/comp/naire.js'], resolver);
+        },
+        NaireCreate: function (resolver) {
+            require(['/static/comp/naire_edit.js'], resolver);
+        },
         NotFound: function (resolver) {
             require(['/static/comp/404.js'], resolver);
         }
@@ -80,6 +86,19 @@ require(['vue','vue_router', 'vue_resource','ELEMENT', 'editor'], function(Vue,V
             {path: '/course/edit/:course_id',name:'修改课程', component: view.CourseEdit, meta:{action:'Edit'}},
             {path: '/course/stds/:course_id', name: '课程学员列表', component: view.CourseStudent}
         ]},{
+            path: '/naires',
+            name: '我的问卷',
+            component: view.Index,
+            children:[{
+                path: '/naires',
+                name: '我的问卷',
+                component: view.Naire
+            },{
+                path: '/naire/create',
+                name: '新建问卷',
+                component: view.NaireCreate
+            }]
+        },{
             path : '*',
             component: view.NotFound,
             hidden: true

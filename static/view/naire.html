@@ -1,0 +1,19 @@
+<el-row>
+    <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
+        <el-form :inline="true">
+            <el-form-item>
+                <el-button type="primary"  class="el-icon-plus" v-on:click="add">新建问卷</el-button>
+            </el-form-item>
+        </el-form>
+    </el-col>
+    <el-col>
+        <el-table>
+            <el-table-column label="名称"></el-table-column>
+            <el-table-column label="介绍"></el-table-column>
+            <el-table-column label="创建时间"></el-table-column>
+            <el-table-column label="截止时间"></el-table-column>
+            <el-table-column label="状态"></el-table-column>
+            <el-table-column label="创建人"></el-table-column>
+        </el-table>
+    </el-col>
+</el-row>
